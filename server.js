@@ -132,7 +132,94 @@ app.get('/api/department/:id', (req, res) => {
       });
     });
   });
-  
+// --------UPDATE SECTION ---------->
+
+// Update an employee
+app.put('/api/employee/:id', (req, res) => {
+  const errors = inputCheck(req.body, 'role_id');
+
+if (errors) {
+  res.status(400).json({ error: errors });
+  return;
+}
+  const sql = `UPDATE employees SET role_id = ? 
+               WHERE id = ?`;
+  const params = [req.body.party_id, req.params.id];
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      // check if a record was found
+    } else if (!result.affectedRows) {
+      res.json({
+        message: 'Employee not found'
+      });
+    } else {
+      res.json({
+        message: 'success',
+        data: req.body,
+        changes: result.affectedRows
+      });
+    }
+  });
+});
+
+// Update a role
+app.put('/api/role/:id', (req, res) => {
+  const errors = inputCheck(req.body, 'd_id');
+
+if (errors) {
+  res.status(400).json({ error: errors });
+  return;
+}
+  const sql = `UPDATE roles SET d_id = ? 
+               WHERE id = ?`;
+  const params = [req.body.party_id, req.params.id];
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      // check if a record was found
+    } else if (!result.affectedRows) {
+      res.json({
+        message: 'Role not found'
+      });
+    } else {
+      res.json({
+        message: 'success',
+        data: req.body,
+        changes: result.affectedRows
+      });
+    }
+  });
+});
+
+// Update a department
+// app.put('/api/department/:id', (req, res) => {
+//   const errors = inputCheck(req.body, 'party_id');
+
+// if (errors) {
+//   res.status(400).json({ error: errors });
+//   return;
+// }
+//   const sql = `UPDATE department SET = ? 
+//                WHERE id = ?`;
+//   const params = [req.body.party_id, req.params.id];
+//   db.query(sql, params, (err, result) => {
+//     if (err) {
+//       res.status(400).json({ error: err.message });
+//       // check if a record was found
+//     } else if (!result.affectedRows) {
+//       res.json({
+//         message: 'Department not found'
+//       });
+//     } else {
+//       res.json({
+//         message: 'success',
+//         data: req.body,
+//         changes: result.affectedRows
+//       });
+//     }
+//   });
+// });
 
 //  --------- DELETE SECTION -------->
 
