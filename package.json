@@ -1,8 +1,7 @@
 {
   "name": "employee-tracker-800",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "jest",
     "start": "node server.js"
@@ -20,9 +19,10 @@
   "homepage": "https://github.com/Serendipbrity/Employee-Tracker-800#readme",
   "dependencies": {
     "express": "^4.18.1",
+    "inquirer": "^8.2.4",
+    "install": "^0.13.0",
+    "jest": "^28.1.0",
     "mysql2": "^2.3.3"
   },
-  "devDependencies": {
-    "jest": "^28.1.0"
-  }
+  "description": ""
 }

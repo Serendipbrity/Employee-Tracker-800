@@ -3,8 +3,10 @@ const router = express.Router();
 const db = require('../../db/connection');
 const inputCheck = require('../../utils/inputCheck');
 
-// Get all departments
-router.get('/department', (req, res) => {
+
+const getAllDep = () => {
+  // Get all departments
+  router.get('/department', (req, res) => {
     const sql = `SELECT * FROM department`;
   
     db.query(sql, (err, rows) => {
@@ -17,8 +19,8 @@ router.get('/department', (req, res) => {
         data: rows
       });
     });
-});
-  
+  });
+}  
 
 // Get a single department
 router.get('/department/:id', (req, res) => {
@@ -38,60 +40,31 @@ router.get('/department/:id', (req, res) => {
 });
   
 
-
-// Update a department
-// router.put('/department/:id', (req, res) => {
-//   const errors = inputCheck(req.body, 'party_id');
-
-// if (errors) {
-//   res.status(400).json({ error: errors });
-//   return;
-// }
-//   const sql = `UPDATE department SET = ? 
-//                WHERE id = ?`;
-//   const params = [req.body.party_id, req.params.id];
-//   db.query(sql, params, (err, result) => {
-//     if (err) {
-//       res.status(400).json({ error: err.message });
-//       // check if a record was found
-//     } else if (!result.affectedRows) {
-//       res.json({
-//         message: 'Department not found'
-//       });
-//     } else {
-//       res.json({
-//         message: 'success',
-//         data: req.body,
-//         changes: result.affectedRows
-//       });
-//     }
-//   });
-// });
-
-
-// create a department
-router.post('/department', ({ body }, res) => {
+const addDep = () => {
+  // create a department
+  router.post('/department', ({ body }, res) => {
     const errors = inputCheck(body,
-       'names'
+      'names'
     );
     if (errors) {
-        res.status(400).json({ error: errors });
+      res.status(400).json({ error: errors });
     }
     const sql = `INSERT INTO roles (names)
     VALUES (?,?,?,?,?,?)`
     const params = [body.names];
 
     db.query(sql, params, (err, result) => {
-        if (err) {
-            res.status(400).json({ error: err.message });
-            return;
-        }
-        res.json({
-            message: 'success',
-            data: body
-        });
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      res.json({
+        message: 'success',
+        data: body
+      });
     });
-});
+  });
+};
 
 
   // Delete a department
@@ -115,5 +88,9 @@ router.post('/department', ({ body }, res) => {
       }
     });
   });
+
+  module.exports = {
+    getAllDep, addDep
+  }
 
 module.exports = router;

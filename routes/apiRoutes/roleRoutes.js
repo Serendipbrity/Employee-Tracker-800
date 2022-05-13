@@ -4,8 +4,9 @@ const db = require('../../db/connection');
 const inputCheck = require('../../utils/inputCheck');
 
 
-// Get all roles
-router.get('/roles', (req, res) => {
+const getAllRoles = () => {
+  // Get all roles
+  router.get('/roles', (req, res) => {
     const sql = `SELECT * FROM roles`;
   
     db.query(sql, (err, rows) => {
@@ -18,8 +19,8 @@ router.get('/roles', (req, res) => {
         data: rows
       });
     });
-});
-  
+  });
+}
 
   // Get a single role
   router.get('/role/:id', (req, res) => {
@@ -39,15 +40,15 @@ router.get('/roles', (req, res) => {
   });
 
 
-
-// Update a role
-router.put('/role/:id', (req, res) => {
+const upRole = () => {
+  // Update a role
+  router.put('/role/:id', (req, res) => {
     const errors = inputCheck(req.body, 'd_id');
   
-  if (errors) {
-    res.status(400).json({ error: errors });
-    return;
-  }
+    if (errors) {
+      res.status(400).json({ error: errors });
+      return;
+    }
     const sql = `UPDATE roles SET d_id = ? 
                  WHERE id = ?`;
     const params = [req.body.party_id, req.params.id];
@@ -68,33 +69,35 @@ router.put('/role/:id', (req, res) => {
       }
     });
   });
+};
 
-
-// create a role
-router.post('/roles', ({ body }, res) => {
+const addRole = () => {
+  // create a role
+  router.post('/roles', ({ body }, res) => {
     const errors = inputCheck(body,
-        'title',
-        'department',
-        'salary'
+      'title',
+      'department',
+      'salary'
     );
     if (errors) {
-        res.status(400).json({ error: errors });
+      res.status(400).json({ error: errors });
     }
     const sql = `INSERT INTO roles (title, department, salary)
     VALUES (?,?,?,?,?,?)`
     const params = [body.title, body.department, body.salary];
 
     db.query(sql, params, (err, result) => {
-        if (err) {
-            res.status(400).json({ error: err.message });
-            return;
-        }
-        res.json({
-            message: 'success',
-            data: body
-        });
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      res.json({
+        message: 'success',
+        data: body
+      });
     });
-});
+  });
+};
 
 
     // Delete a role
@@ -118,5 +121,9 @@ router.delete('/role/:id', (req, res) => {
       }
     });
 });
+
+module.exports = {
+  getAllRoles, addRole, upRole
+}
   
 module.exports = router;

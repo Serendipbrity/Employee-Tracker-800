@@ -2,10 +2,13 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../db/connection');
 const inputCheck = require('../../utils/inputCheck');
+const mysql = require('mysql2');
+const { promptUser } = require('../../server')
 
 
 // Get all employees
-router.get('/employees', (req, res) => {
+const getAllEmp = () => {
+  router.get('/employees', (req, res) => {
     const sql = `SELECT * FROM employees`;
   
     db.query(sql, (err, rows) => {
@@ -18,8 +21,8 @@ router.get('/employees', (req, res) => {
         data: rows
       });
     });
-});
-
+  });
+};
 
 // Get a single employee
 router.get('/employee/:id', (req, res) => {
@@ -38,15 +41,15 @@ router.get('/employee/:id', (req, res) => {
     });
 });
   
-
-// Update an employee
-router.put('/employee/:id', (req, res) => {
+const upEmp = () => {
+  // Update an employee
+  router.put('/employee/:id', (req, res) => {
     const errors = inputCheck(req.body, 'role_id');
   
-  if (errors) {
-    res.status(400).json({ error: errors });
-    return;
-  }
+    if (errors) {
+      res.status(400).json({ error: errors });
+      return;
+    }
     const sql = `UPDATE employees SET role_id = ? 
                  WHERE id = ?`;
     const params = [req.body.party_id, req.params.id];
@@ -67,36 +70,41 @@ router.put('/employee/:id', (req, res) => {
       }
     });
   });
+};
 
-
-// create an employee
-router.post('/employee', ({ body }, res) => {
+const addEmp = () => {
+  // create an employee
+  router.post('/employee', ({ body }, res) => {
     const errors = inputCheck(body,
-        'first_name',
-        'last_name',
-        'title',
-        'department',
-        'salary',
-        'manager'
+      'first_name',
+      'last_name',
+      'title',
+      'department',
+      'salary',
+      'manager'
     );
     if (errors) {
-        res.status(400).json({ error: errors });
+      res.status(400).json({ error: errors });
     }
     const sql = `INSERT INTO employees (first_name, last_name, title, department, salary,manager)
     VALUES (?,?,?,?,?,?)`
     const params = [body.first_name, body.last_name, body.title, body.department, body.salary, body.manager];
 
     db.query(sql, params, (err, result) => {
-        if (err) {
-            res.status(400).json({ error: err.message });
-            return;
-        }
-        res.json({
-            message: 'success',
-            data: body
-        });
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      res.json({
+        message: 'success',
+        data: body
+      });
+      console.table(result);
+
+      promptUser();
     });
-});
+  });
+};
 
 
 
@@ -122,6 +130,8 @@ router.delete('/employee/:id', (req, res) => {
     });
   });
 
-
+module.exports = {
+  getAllEmp, addEmp, upEmp
+}
 module.exports = router;
 
