@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Serendipbrity/Employee-Tracker-800#readme",
   "dependencies": {
+    "console.table": "^0.10.0",
     "express": "^4.18.1",
     "inquirer": "^8.2.4",
     "install": "^0.13.0",

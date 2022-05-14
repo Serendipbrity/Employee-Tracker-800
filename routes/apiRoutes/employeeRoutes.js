@@ -6,23 +6,6 @@ const mysql = require('mysql2');
 const { promptUser } = require('../../server')
 
 
-// Get all employees
-const getAllEmp = () => {
-  router.get('/employees', (req, res) => {
-    const sql = `SELECT * FROM employees`;
-  
-    db.query(sql, (err, rows) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-        return;
-      }
-      res.json({
-        message: 'success',
-        data: rows
-      });
-    });
-  });
-};
 
 // Get a single employee
 router.get('/employee/:id', (req, res) => {
@@ -74,18 +57,18 @@ const upEmp = () => {
 
 const addEmp = () => {
   // create an employee
-  router.post('/employee', ({ body }, res) => {
-    const errors = inputCheck(body,
-      'first_name',
-      'last_name',
-      'title',
-      'department',
-      'salary',
-      'manager'
-    );
-    if (errors) {
-      res.status(400).json({ error: errors });
-    }
+  // router.post('/employee', ({ body }, res) => {
+  //   const errors = inputCheck(body,
+  //     'first_name',
+  //     'last_name',
+  //     'title',
+  //     'department',
+  //     'salary',
+  //     'manager'
+  //   );
+  //   if (errors) {
+  //     res.status(400).json({ error: errors });
+  //   }
     const sql = `INSERT INTO employees (first_name, last_name, title, department, salary,manager)
     VALUES (?,?,?,?,?,?)`
     const params = [body.first_name, body.last_name, body.title, body.department, body.salary, body.manager];
@@ -103,7 +86,7 @@ const addEmp = () => {
 
       promptUser();
     });
-  });
+ 
 };
 
 
@@ -130,8 +113,6 @@ router.delete('/employee/:id', (req, res) => {
     });
   });
 
-module.exports = {
-  getAllEmp, addEmp, upEmp
-}
-module.exports = router;
+
+
 

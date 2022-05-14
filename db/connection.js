@@ -13,5 +13,10 @@ const db = mysql.createConnection(
     console.log('Connected to the emp_tracker database.')
 );
 
+db.connect(function (err) {
+    if (err) throw err;
+    console.log('Database connected!');
+  });
+
 
 module.exports = db;
