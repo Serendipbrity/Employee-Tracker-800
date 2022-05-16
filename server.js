@@ -1,7 +1,7 @@
 
 const { viewEmployees, addEmployee }= require('./employee');
-const viewRoles = require('./roles');
-const viewDepartment = require('./department')
+const { viewRoles, addRole, upRole } = require('./roles');
+const { viewDepartment, addDepartment } = require('./department');
 
 const inquirer = require('inquirer');
 const db = require('./db/connection');
@@ -20,12 +20,10 @@ const promptUser = () => {
         'Add an Employee',
         'Add a Role',
         'Add a Department',
-        'Update an Employee Role',
+        'Update an Employee Role'
       ],
     })
     .then((data) => {
-      // const choice = data.options;
-
       switch (data['options']) {
         case 'View All Employees':
           viewEmployees();
@@ -39,15 +37,15 @@ const promptUser = () => {
         case 'Add an Employee': 
           addEmployee();
           break;
-        // case 'Add a Role':
-        //   addRole();
-        //   break;
-        // case 'Add a Department':
-        //   addDep();
-        //   break;
-        // case 'Update an Employee Role':
-        //   upRole();
-        //   break;
+        case 'Add a Role':
+          addRole();
+          break;
+        case 'Add a Department':
+          addDepartment();
+          break;
+        case 'Update an Employee Role':
+          upRole();
+          break;
       }
     });
 };
@@ -55,3 +53,5 @@ const promptUser = () => {
 
 
 promptUser();
+
+module.exports =  promptUser 
