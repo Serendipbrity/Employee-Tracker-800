@@ -12,6 +12,7 @@ install mysql
 For anyone to keep their employee records organized
 
 ## Video 
+https://drive.google.com/file/d/19SuA1yOCHYTJKlXSCk0ZtVlKaDqfduod/view
 
 
 ## Github Repo
